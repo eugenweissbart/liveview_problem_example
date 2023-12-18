@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    env_file: 
+      - .env
+    networks:
+      - ngrok_routing
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    env_file:
+      - .env
+    networks:
+      - ngrok_routing
+    ports:
+      - "4040:4040"
+    command:
+      - "http"
+      - "--domain"
+      - "${PHX_HOST}"
+      - "app:4000"
+
+networks:
+  ngrok_routing:
